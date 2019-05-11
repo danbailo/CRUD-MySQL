@@ -1,7 +1,15 @@
 #data for example
 #https://github.com/datacharmer/test_db
 
+#CRUD in SQL
+#Create           - INSERT
+#Read (Retrieve)  - SELECT
+#Update (Modify)  -	UPDATE
+#Delete (Destroy) - DELETE
+
+
 import mysql.connector
+import datetime
 from mysql.connector import errorcode
 
 def connect(user=None, password=None, host=None, database=None):
@@ -42,14 +50,31 @@ def close(connector,cursor):
     cursor.close()
     connector.close()
 
+def query(cursor):
+    cursor.execute("SELECT NOW()")
+    for x in cursor:
+        print(x)
+
 connector = connect('daniel','123456789')
 if connector: cursor = connector.cursor()
-# print(cursor)
-# print(connector)
+else: 
+    print('error')
+    exit(1)
 
-# create_database(cursor,'python_test')
-# drop_database(cursor,'python_test')
-connect_database(cursor, 'TRABALHO_BD1')
+connect_database(cursor, 'employees')
+
+query(cursor)
+
+# query = ("SELECT first_name, last_name, hire_date FROM employees "
+# "WHERE hire_date BETWEEN %s AND %s")
+
+# hire_start = datetime.date(1999, 1, 1)
+# hire_end = datetime.date(1999, 12, 31)
+
+# cursor.execute(query, (hire_start, hire_end))
+
+# for (first_name, last_name, hire_date) in cursor:
+#     print("{}, {} was hired on {:%d %b %Y}".format(last_name, first_name, hire_date))
 
 
 close(connector, cursor)
