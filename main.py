@@ -1,5 +1,6 @@
 #data for example
 #https://github.com/datacharmer/test_db
+#https://medium.com/@ramojol/python-context-managers-and-the-with-statement-8f53d4d9f87
 
 #CRUD in SQL
 #Create           - INSERT
@@ -10,12 +11,16 @@
 import MySQLcompatible as MySQL
 
 if __name__ == "__main__":
-    connector = connect('daniel','123456789','127.0.0.1',None,3306)
-    if connector: cursor = connector.cursor()
-    else: 
-        print('error')
-        exit(1)
+    
+    with MySQL.MySQLcompatible('daniel','123456789').connect as db:
+        print(db)
 
-    print(connector)
+    # connector = connect('daniel','123456789','127.0.0.1',None,3306)
+    # if connector: cursor = connector.cursor()
+    # else: 
+    #     print('error')
+    #     exit(1)
 
-    close(connector, cursor)
+    # print(connector)
+
+    # close(connector, cursor)

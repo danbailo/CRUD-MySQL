@@ -1,20 +1,27 @@
 import mysql.connector
 from mysql.connector import errorcode
 
-class MySQL(object):
+class MySQLcompatible(object):
     """MySQL databate connection compatible with statement"""
     def __init__(self, user=None, password=None, host=None, database=None, port=None):
-        if host is None: host = 'localhost'
-        if port is None: port = 3306
-        if user is None or password is None: return False
+        if host is None: self.host = 'localhost'
+        if port is None: self.port = 3306
+        if user is None or password is None: return None
         
         config = {'user': user,'password': password,'host': host,'database': database, 'port': port}
         try:
-            cnx = mysql.connector.connect(**config)
-            return cnx
+            self.connect = mysql.connector.connect(**config)
+            # return self.connect
         except mysql.connector.Error as err:
             print('CONNECT ERROR -',err)
-            return exit(-1)
+            return None
+
+    def __enter__(self):
+        self.cursor = self.connect.cursor()
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        self.cursor.close()
+        self.connect.close()
 
     # def connect_database(cursor, database_name):
     #     try:
