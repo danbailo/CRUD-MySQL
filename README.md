@@ -1,1 +1,2 @@
-crud to mysql in python
+##License MIT
+[License](LICENSE.md).
